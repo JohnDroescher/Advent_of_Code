@@ -1,0 +1,21 @@
+import pandas as pd
+data = pd.read_csv('input.txt', header=None, sep=' ')
+
+# Step 1:
+df_raw = data.groupby(0)[1].sum()
+print('Step 1 position:', (df_raw.down - df_raw.up) * df_raw.forward)
+
+# Step 2: Because the first was far too easy
+aim = 0
+depth = 0
+horiz = 0
+
+for i, direction in enumerate(data[0]):
+  if 'up' in direction:
+    aim -= data.iloc[i][1]
+  elif 'down' in direction:
+    aim += data.iloc[i][1]
+  else:
+    depth += aim * data.iloc[i][1]
+    horiz += data.iloc[i][1]
+print('The actual position, according to the manual, is:', depth * horiz)
